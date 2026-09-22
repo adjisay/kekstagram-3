@@ -1,3 +1,9 @@
+const PHOTOS_COUNT = 25;
+const MIN_LIKES = 15;
+const MAX_LIKES = 200;
+const MAX_COMMENTS = 30;
+const MAX_AVATAR_ID = 6;
+
 const descriptions = [
   'Красивый закат над морем',
   'Прогулка по вечернему городу',
@@ -48,19 +54,21 @@ const getRandomMessage = () => {
 
 const createComment = (id) => ({
   id,
-  avatar: `img/avatar-${getRandomInteger(1, 6)}.svg`,
+  avatar: `img/avatar-${getRandomInteger(1, MAX_AVATAR_ID)}.svg`,
   message: getRandomMessage(),
   name: getRandomArrayElement(names),
 });
 
-const createComments = () => Array.from({ length: getRandomInteger(0, 30) }, (_, index) => createComment(index + 1));
+const createComments = () => Array.from({ length: getRandomInteger(0, MAX_COMMENTS) }, (_, index) => createComment(index + 1));
 
 const createPhoto = (id) => ({
   id,
   url: `photos/${id}.jpg`,
   description: getRandomArrayElement(descriptions),
-  likes: getRandomInteger(15, 200),
+  likes: getRandomInteger(MIN_LIKES, MAX_LIKES),
   comments: createComments(),
 });
 
-const photos = Array.from({ length: 25 }, (_, index) => createPhoto(index + 1));
+const photos = Array.from({ length: PHOTOS_COUNT }, (_, index) => createPhoto(index + 1));
+
+window.console.log(photos);
