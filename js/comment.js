@@ -1,4 +1,4 @@
-import { getRandomInteger, getRandomArrayElement } from './util.js';
+import { getRandomInteger, getRandomArrayElement } from './utils.js';
 
 const MIN_COMMENTS = 0;
 const MAX_COMMENTS = 30;
