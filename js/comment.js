@@ -29,7 +29,6 @@ const MESSAGES = [
   'Лица у людей на фотке перекошены, как будто их избивают.',
 ];
 
-
 const getRandomMessage = () => {
   const firstMessage = getRandomArrayElement(MESSAGES);
 
@@ -37,7 +36,7 @@ const getRandomMessage = () => {
     return firstMessage;
   }
 
-  const secondMessage = getRandomArrayElement(MESSAGES);
+  const secondMessage = getRandomArrayElement(MESSAGES.filter((message) => message !== firstMessage));
 
   return `${firstMessage} ${secondMessage}`;
 };
