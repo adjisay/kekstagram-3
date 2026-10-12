@@ -1,5 +1,3 @@
-import { isEscapeKey } from './utils.js';
-
 const MAX_HASHTAG_COUNT = 5;
 const MAX_COMMENT_LENGTH = 140;
 const HASHTAG_PATTERN = /^#[a-zа-яё0-9]{1,19}$/i;
@@ -12,9 +10,6 @@ const ErrorText = {
 };
 
 const formElement = document.querySelector('.img-upload__form');
-const fileInputElement = formElement.querySelector('.img-upload__input');
-const overlayElement = formElement.querySelector('.img-upload__overlay');
-const cancelButtonElement = formElement.querySelector('.img-upload__cancel');
 const hashtagInputElement = formElement.querySelector('.text__hashtags');
 const commentInputElement = formElement.querySelector('.text__description');
 
@@ -43,43 +38,8 @@ pristine.addValidator(hashtagInputElement, validateHashtagCount, ErrorText.HASHT
 pristine.addValidator(hashtagInputElement, validateHashtagUnique, ErrorText.HASHTAG_DUPLICATE, 1, true);
 pristine.addValidator(commentInputElement, validateComment, ErrorText.COMMENT_LENGTH);
 
-const onFieldKeydown = (evt) => {
-  if (isEscapeKey(evt)) {
-    evt.stopPropagation();
-  }
-};
+const validateForm = () => pristine.validate();
 
-function onDocumentKeydown(evt) {
-  if (isEscapeKey(evt)) {
-    evt.preventDefault();
-    closeUploadForm();
-  }
-}
+const resetValidation = () => pristine.reset();
 
-function openUploadForm() {
-  overlayElement.classList.remove('hidden');
-  document.body.classList.add('modal-open');
-  document.addEventListener('keydown', onDocumentKeydown);
-}
-
-function closeUploadForm() {
-  overlayElement.classList.add('hidden');
-  document.body.classList.remove('modal-open');
-  document.removeEventListener('keydown', onDocumentKeydown);
-
-  // сбросим все поля, чтобы change сработал при выборе того же файла
-  formElement.reset();
-  pristine.reset();
-}
-
-hashtagInputElement.addEventListener('keydown', onFieldKeydown);
-commentInputElement.addEventListener('keydown', onFieldKeydown);
-
-fileInputElement.addEventListener('change', openUploadForm);
-cancelButtonElement.addEventListener('click', closeUploadForm);
-
-formElement.addEventListener('submit', (evt) => {
-  if (!pristine.validate()) {
-    evt.preventDefault();
-  }
-});
+export { validateForm, resetValidation };
