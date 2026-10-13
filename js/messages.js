@@ -4,6 +4,7 @@ const DATA_ERROR_SHOW_TIME = 5000;
 
 const dataErrorTemplateElement = document.querySelector('#data-error').content.querySelector('.data-error');
 const successTemplateElement = document.querySelector('#success').content.querySelector('.success');
+const errorTemplateElement = document.querySelector('#error').content.querySelector('.error');
 
 const showDataError = () => {
   const dataErrorElement = dataErrorTemplateElement.cloneNode(true);
@@ -41,5 +42,6 @@ const showMessage = (templateElement, buttonSelector) => {
 };
 
 const showSuccessMessage = () => showMessage(successTemplateElement, '.success__button');
+const showErrorMessage = () => showMessage(errorTemplateElement, '.error__button');
 
-export { showDataError, showSuccessMessage };
+export { showDataError, showSuccessMessage, showErrorMessage };

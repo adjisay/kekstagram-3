@@ -1,5 +1,5 @@
 import { sendData } from '../api.js';
-import { showSuccessMessage } from '../messages.js';
+import { showSuccessMessage, showErrorMessage } from '../messages.js';
 import { validateForm } from './validation.js';
 import { openUploadForm, closeUploadForm } from './modal.js';
 
@@ -26,6 +26,7 @@ const onFormSubmit = (evt) => {
       closeUploadForm();
       showSuccessMessage();
     })
+    .catch(showErrorMessage)
     .finally(() => setSubmitButtonDisabled(false));
 };
 
