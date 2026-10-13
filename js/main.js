@@ -1,8 +1,16 @@
-import './form/index.js';
-import { createPhotos } from './photo.js';
+import { getData } from './api.js';
 import { renderPictures } from './picture-render.js';
 import { openBigPicture } from './big-picture-render.js';
+import { showDataError } from './messages.js';
+import './form/index.js';
 
-const photos = createPhotos();
+const init = async () => {
+  try {
+    const photos = await getData();
+    renderPictures(photos, openBigPicture);
+  } catch {
+    showDataError();
+  }
+};
 
-renderPictures(photos, openBigPicture);
+init();

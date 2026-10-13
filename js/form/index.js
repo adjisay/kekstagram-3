@@ -1,13 +1,34 @@
+import { sendData } from '../api.js';
+import { showSuccessMessage, showErrorMessage } from '../messages.js';
 import { validateForm } from './validation.js';
 import { openUploadForm, closeUploadForm } from './modal.js';
 
 const formElement = document.querySelector('.img-upload__form');
 const fileInputElement = formElement.querySelector('.img-upload__input');
 const cancelButtonElement = formElement.querySelector('.img-upload__cancel');
+const submitButtonElement = formElement.querySelector('.img-upload__submit');
 
-const onFormSubmit = (evt) => {
+const setSubmitButtonDisabled = (isDisabled) => {
+  submitButtonElement.disabled = isDisabled;
+};
+
+const onFormSubmit = async (evt) => {
+  evt.preventDefault();
+
   if (!validateForm()) {
-    evt.preventDefault();
+    return;
+  }
+
+  setSubmitButtonDisabled(true);
+
+  try {
+    await sendData(new FormData(formElement));
+    closeUploadForm();
+    showSuccessMessage();
+  } catch {
+    showErrorMessage();
+  } finally {
+    setSubmitButtonDisabled(false);
   }
 };
 
