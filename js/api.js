@@ -15,17 +15,21 @@ const ErrorText = {
   SEND_DATA: 'Не удалось отправить форму',
 };
 
-const request = (route, errorText, options = {}) =>
-  fetch(`${BASE_URL}${route}`, options).then((response) => {
-    if (!response.ok) {
-      throw new Error(errorText);
-    }
+const request = async (route, errorText, options = {}) => {
+  const response = await fetch(`${BASE_URL}${route}`, options);
 
-    return response;
-  });
+  if (!response.ok) {
+    throw new Error(errorText);
+  }
 
-const getData = () =>
-  request(Route.GET_DATA, ErrorText.GET_DATA).then((response) => response.json());
+  return response;
+};
+
+const getData = async () => {
+  const response = await request(Route.GET_DATA, ErrorText.GET_DATA);
+
+  return response.json();
+};
 
 const sendData = (body) =>
   request(Route.SEND_DATA, ErrorText.SEND_DATA, { method: Method.POST, body });

@@ -12,7 +12,7 @@ const setSubmitButtonDisabled = (isDisabled) => {
   submitButtonElement.disabled = isDisabled;
 };
 
-const onFormSubmit = (evt) => {
+const onFormSubmit = async (evt) => {
   evt.preventDefault();
 
   if (!validateForm()) {
@@ -21,13 +21,15 @@ const onFormSubmit = (evt) => {
 
   setSubmitButtonDisabled(true);
 
-  sendData(new FormData(formElement))
-    .then(() => {
-      closeUploadForm();
-      showSuccessMessage();
-    })
-    .catch(showErrorMessage)
-    .finally(() => setSubmitButtonDisabled(false));
+  try {
+    await sendData(new FormData(formElement));
+    closeUploadForm();
+    showSuccessMessage();
+  } catch {
+    showErrorMessage();
+  } finally {
+    setSubmitButtonDisabled(false);
+  }
 };
 
 fileInputElement.addEventListener('change', openUploadForm);

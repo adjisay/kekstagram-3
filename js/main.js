@@ -4,8 +4,13 @@ import { openBigPicture } from './big-picture-render.js';
 import { showDataError } from './messages.js';
 import './form/index.js';
 
-getData()
-  .then((photos) => {
+const init = async () => {
+  try {
+    const photos = await getData();
     renderPictures(photos, openBigPicture);
-  })
-  .catch(showDataError);
+  } catch {
+    showDataError();
+  }
+};
+
+init();
