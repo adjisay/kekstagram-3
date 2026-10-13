@@ -1,8 +1,8 @@
-import './form/index.js';
-import { createPhotos } from './photo.js';
+import { getData } from './api.js';
 import { renderPictures } from './picture-render.js';
 import { openBigPicture } from './big-picture-render.js';
+import './form/index.js';
 
-const photos = createPhotos();
-
-renderPictures(photos, openBigPicture);
+getData().then((photos) => {
+  renderPictures(photos, openBigPicture);
+});
