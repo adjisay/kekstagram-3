@@ -1,6 +1,7 @@
-import { getRandomInteger } from './utils.js';
+import { getRandomInteger, debounce } from './utils.js';
 
 const RANDOM_PHOTOS_COUNT = 10;
+const RERENDER_DELAY = 500;
 const ACTIVE_BUTTON_CLASS = 'img-filters__button--active';
 
 const FilterId = {
@@ -33,6 +34,10 @@ const getFilteredPhotos = {
 };
 
 const initFilters = (photos, renderFilteredPictures) => {
+  const renderDebounced = debounce((filterId) => {
+    renderFilteredPictures(getFilteredPhotos[filterId](photos));
+  }, RERENDER_DELAY);
+
   const onFiltersFormClick = (evt) => {
     const buttonElement = evt.target.closest('.img-filters__button');
 
@@ -43,7 +48,7 @@ const initFilters = (photos, renderFilteredPictures) => {
     filtersFormElement.querySelector(`.${ACTIVE_BUTTON_CLASS}`).classList.remove(ACTIVE_BUTTON_CLASS);
     buttonElement.classList.add(ACTIVE_BUTTON_CLASS);
 
-    renderFilteredPictures(getFilteredPhotos[buttonElement.id](photos));
+    renderDebounced(buttonElement.id);
   };
 
   filtersFormElement.addEventListener('click', onFiltersFormClick);
