@@ -8,14 +8,20 @@ const overlayElement = formElement.querySelector('.img-upload__overlay');
 const hashtagInputElement = formElement.querySelector('.text__hashtags');
 const commentInputElement = formElement.querySelector('.text__description');
 
-const onFieldKeydown = (evt) => {
+const onHashtagInputKeydown = (evt) => {
   if (isEscapeKey(evt)) {
     evt.stopPropagation();
   }
 };
 
-hashtagInputElement.addEventListener('keydown', onFieldKeydown);
-commentInputElement.addEventListener('keydown', onFieldKeydown);
+const onCommentInputKeydown = (evt) => {
+  if (isEscapeKey(evt)) {
+    evt.stopPropagation();
+  }
+};
+
+hashtagInputElement.addEventListener('keydown', onHashtagInputKeydown);
+commentInputElement.addEventListener('keydown', onCommentInputKeydown);
 
 function onDocumentKeydown(evt) {
   if (isEscapeKey(evt)) {

@@ -1,12 +1,16 @@
 const MAX_HASHTAG_COUNT = 5;
+const MAX_HASHTAG_LENGTH = 20;
 const MAX_COMMENT_LENGTH = 140;
-const HASHTAG_PATTERN = /^#[a-zа-яё0-9]{1,19}$/i;
+const HASHTAG_SYMBOLS_PATTERN = /^#[a-zа-яё0-9]+$/i;
 
 const ErrorText = {
-  INVALID_HASHTAG: 'Неправильный хэштег',
-  HASHTAG_COUNT: `Превышено количество хэштегов (максимум ${MAX_HASHTAG_COUNT})`,
-  HASHTAG_DUPLICATE: 'Хэштеги повторяются',
-  COMMENT_LENGTH: `Длина комментария больше ${MAX_COMMENT_LENGTH} символов`,
+  HASHTAG_START: 'Хэштег должен начинаться с символа #',
+  HASHTAG_ONLY_HASH: 'Хэштег не может состоять только из символа #',
+  HASHTAG_SYMBOLS: 'Хэштег может содержать только буквы и цифры, хэштеги разделяются пробелами',
+  HASHTAG_LENGTH: `Максимальная длина хэштега — ${MAX_HASHTAG_LENGTH} символов, включая #`,
+  HASHTAG_COUNT: `Нельзя указать больше ${MAX_HASHTAG_COUNT} хэштегов`,
+  HASHTAG_DUPLICATE: 'Один и тот же хэштег нельзя использовать дважды',
+  COMMENT_LENGTH: `Комментарий не может быть длиннее ${MAX_COMMENT_LENGTH} символов`,
 };
 
 const formElement = document.querySelector('.img-upload__form');
@@ -22,9 +26,15 @@ const pristine = new Pristine(formElement, {
 
 const getHashtags = (value) => value.trim().toLowerCase().split(/\s+/).filter(Boolean);
 
-const validateHashtagFormat = (value) => getHashtags(value).every((tag) => HASHTAG_PATTERN.test(tag));
-
 const validateHashtagCount = (value) => getHashtags(value).length <= MAX_HASHTAG_COUNT;
+
+const validateHashtagStart = (value) => getHashtags(value).every((tag) => tag.startsWith('#'));
+
+const validateHashtagNotOnlyHash = (value) => getHashtags(value).every((tag) => tag !== '#');
+
+const validateHashtagSymbols = (value) => getHashtags(value).every((tag) => HASHTAG_SYMBOLS_PATTERN.test(tag));
+
+const validateHashtagLength = (value) => getHashtags(value).every((tag) => tag.length <= MAX_HASHTAG_LENGTH);
 
 const validateHashtagUnique = (value) => {
   const hashtags = getHashtags(value);
@@ -33,7 +43,10 @@ const validateHashtagUnique = (value) => {
 
 const validateComment = (value) => value.length <= MAX_COMMENT_LENGTH;
 
-pristine.addValidator(hashtagInputElement, validateHashtagFormat, ErrorText.INVALID_HASHTAG, 3, true);
+pristine.addValidator(hashtagInputElement, validateHashtagStart, ErrorText.HASHTAG_START, 6, true);
+pristine.addValidator(hashtagInputElement, validateHashtagNotOnlyHash, ErrorText.HASHTAG_ONLY_HASH, 5, true);
+pristine.addValidator(hashtagInputElement, validateHashtagSymbols, ErrorText.HASHTAG_SYMBOLS, 4, true);
+pristine.addValidator(hashtagInputElement, validateHashtagLength, ErrorText.HASHTAG_LENGTH, 3, true);
 pristine.addValidator(hashtagInputElement, validateHashtagCount, ErrorText.HASHTAG_COUNT, 2, true);
 pristine.addValidator(hashtagInputElement, validateHashtagUnique, ErrorText.HASHTAG_DUPLICATE, 1, true);
 pristine.addValidator(commentInputElement, validateComment, ErrorText.COMMENT_LENGTH);

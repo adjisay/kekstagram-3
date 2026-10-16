@@ -60,9 +60,13 @@ const onEffectsListChange = (evt) => {
   setEffect(evt.target.value);
 };
 
+const onSliderUpdate = () => {
+  applyEffectLevel();
+};
+
 const resetEffects = () => setEffect(DEFAULT_EFFECT);
 
-sliderElement.noUiSlider.on('update', applyEffectLevel);
+sliderElement.noUiSlider.on('update', onSliderUpdate);
 effectsListElement.addEventListener('change', onEffectsListChange);
 
 resetEffects();

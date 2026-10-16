@@ -36,7 +36,6 @@ const createCommentElement = ({ avatar, name, message }) => {
   return commentElement;
 };
 
-// Дорисовывает следующую порцию комментариев, не перерисовывая уже показанные
 const renderNextComments = () => {
   const nextCount = Math.min(shownCommentsCount + COMMENTS_PER_STEP, currentComments.length);
   const fragment = document.createDocumentFragment();
@@ -84,6 +83,10 @@ function closeBigPicture() {
   document.removeEventListener('keydown', onDocumentKeydown);
 }
 
+const onCancelButtonClick = () => {
+  closeBigPicture();
+};
+
 const openBigPicture = (photo) => {
   renderBigPicture(photo);
 
@@ -94,6 +97,6 @@ const openBigPicture = (photo) => {
 };
 
 commentsLoaderElement.addEventListener('click', onCommentsLoaderClick);
-cancelButtonElement.addEventListener('click', closeBigPicture);
+cancelButtonElement.addEventListener('click', onCancelButtonClick);
 
 export { openBigPicture };

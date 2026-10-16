@@ -18,7 +18,15 @@ const createPicture = (photo, onPictureClick) => {
   return pictureElement;
 };
 
+const clearPictures = () => {
+  picturesContainerElement.querySelectorAll('.picture').forEach((pictureElement) => {
+    pictureElement.remove();
+  });
+};
+
 const renderPictures = (pictures, onPictureClick) => {
+  clearPictures();
+
   const fragment = document.createDocumentFragment();
 
   pictures.forEach((picture) => {
