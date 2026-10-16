@@ -8,7 +8,7 @@ const fileInputElement = formElement.querySelector('.img-upload__input');
 const cancelButtonElement = formElement.querySelector('.img-upload__cancel');
 const submitButtonElement = formElement.querySelector('.img-upload__submit');
 
-const setSubmitButtonDisabled = (isDisabled) => {
+const toggleSubmitButton = (isDisabled) => {
   submitButtonElement.disabled = isDisabled;
 };
 
@@ -19,7 +19,7 @@ const onFormSubmit = async (evt) => {
     return;
   }
 
-  setSubmitButtonDisabled(true);
+  toggleSubmitButton(true);
 
   try {
     await sendData(new FormData(formElement));
@@ -28,10 +28,18 @@ const onFormSubmit = async (evt) => {
   } catch {
     showErrorMessage();
   } finally {
-    setSubmitButtonDisabled(false);
+    toggleSubmitButton(false);
   }
 };
 
-fileInputElement.addEventListener('change', openUploadForm);
-cancelButtonElement.addEventListener('click', closeUploadForm);
+const onFileInputChange = () => {
+  openUploadForm();
+};
+
+const onCancelButtonClick = () => {
+  closeUploadForm();
+};
+
+fileInputElement.addEventListener('change', onFileInputChange);
+cancelButtonElement.addEventListener('click', onCancelButtonClick);
 formElement.addEventListener('submit', onFormSubmit);
