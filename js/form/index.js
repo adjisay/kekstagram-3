@@ -2,6 +2,7 @@ import { sendData } from '../api.js';
 import { showSuccessMessage, showErrorMessage } from '../messages.js';
 import { validateForm } from './validation.js';
 import { openUploadForm, closeUploadForm } from './modal.js';
+import { showPreview } from './preview.js';
 
 const formElement = document.querySelector('.img-upload__form');
 const fileInputElement = formElement.querySelector('.img-upload__input');
@@ -33,6 +34,7 @@ const onFormSubmit = async (evt) => {
 };
 
 const onFileInputChange = () => {
+  showPreview(fileInputElement.files[0]);
   openUploadForm();
 };
 
