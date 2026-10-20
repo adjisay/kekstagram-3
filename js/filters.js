@@ -13,21 +13,24 @@ const FilterId = {
 const filtersElement = document.querySelector('.img-filters');
 const filtersFormElement = filtersElement.querySelector('.img-filters__form');
 
+let activeButtonElement = filtersFormElement.querySelector(`.${ACTIVE_BUTTON_CLASS}`);
+
 const getRandomPhotos = (photos) => {
   const shuffledPhotos = [...photos];
+  const count = Math.min(RANDOM_PHOTOS_COUNT, shuffledPhotos.length);
 
-  for (let i = shuffledPhotos.length - 1; i > 0; i--) {
+  for (let i = shuffledPhotos.length - 1; i >= shuffledPhotos.length - count; i--) {
     const j = getRandomInteger(0, i);
     [shuffledPhotos[i], shuffledPhotos[j]] = [shuffledPhotos[j], shuffledPhotos[i]];
   }
 
-  return shuffledPhotos.slice(0, RANDOM_PHOTOS_COUNT);
+  return shuffledPhotos.slice(-count);
 };
 
 const getDiscussedPhotos = (photos) =>
   [...photos].sort((photoA, photoB) => photoB.comments.length - photoA.comments.length);
 
-const getFilteredPhotos = {
+const filterIdToPhotosGetter = {
   [FilterId.DEFAULT]: (photos) => [...photos],
   [FilterId.RANDOM]: getRandomPhotos,
   [FilterId.DISCUSSED]: getDiscussedPhotos,
@@ -35,7 +38,7 @@ const getFilteredPhotos = {
 
 const initFilters = (photos, renderFilteredPictures) => {
   const renderDebounced = debounce((filterId) => {
-    renderFilteredPictures(getFilteredPhotos[filterId](photos));
+    renderFilteredPictures(filterIdToPhotosGetter[filterId](photos));
   }, RERENDER_DELAY);
 
   const onFiltersFormClick = (evt) => {
@@ -45,8 +48,9 @@ const initFilters = (photos, renderFilteredPictures) => {
       return;
     }
 
-    filtersFormElement.querySelector(`.${ACTIVE_BUTTON_CLASS}`).classList.remove(ACTIVE_BUTTON_CLASS);
+    activeButtonElement.classList.remove(ACTIVE_BUTTON_CLASS);
     buttonElement.classList.add(ACTIVE_BUTTON_CLASS);
+    activeButtonElement = buttonElement;
 
     renderDebounced(buttonElement.id);
   };

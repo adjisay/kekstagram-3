@@ -13,7 +13,7 @@ let currentScale = SCALE_DEFAULT;
 const setScale = (value) => {
   currentScale = value;
   scaleValueElement.value = `${value}%`;
-  previewImageElement.style.transform = `scale(${value / 100})`;
+  previewImageElement.style.transform = `scale(${value / SCALE_MAX})`;
 };
 
 const onSmallerButtonClick = () => {
