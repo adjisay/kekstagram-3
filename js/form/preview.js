@@ -9,14 +9,18 @@ let currentImageUrl = '';
 
 const isImageFile = (file) => file.type.startsWith(IMAGE_MIME_PREFIX);
 
+const setEffectPreviewsBackground = (value) => {
+  effectPreviewElements.forEach((effectPreviewElement) => {
+    effectPreviewElement.style.backgroundImage = value;
+  });
+};
+
 const showPreview = (file) => {
   currentImageUrl = URL.createObjectURL(file);
 
   previewImageElement.src = currentImageUrl;
 
-  effectPreviewElements.forEach((effectPreviewElement) => {
-    effectPreviewElement.style.backgroundImage = `url(${currentImageUrl})`;
-  });
+  setEffectPreviewsBackground(`url("${currentImageUrl}")`);
 };
 
 const resetPreview = () => {
@@ -29,9 +33,7 @@ const resetPreview = () => {
 
   previewImageElement.src = defaultPreviewSrc;
 
-  effectPreviewElements.forEach((effectPreviewElement) => {
-    effectPreviewElement.style.backgroundImage = '';
-  });
+  setEffectPreviewsBackground('');
 };
 
 export { isImageFile, showPreview, resetPreview };

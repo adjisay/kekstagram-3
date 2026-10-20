@@ -1,6 +1,13 @@
 const DEFAULT_EFFECT = 'none';
 
-const Effect = {
+const DEFAULT_SLIDER_OPTIONS = {
+  range: { min: 0, max: 1 },
+  start: 1,
+  step: 0.1,
+  connect: 'lower',
+};
+
+const effectNameToSettings = {
   none: { filter: null },
   chrome: { filter: 'grayscale', unit: '', min: 0, max: 1, step: 0.1 },
   sepia: { filter: 'sepia', unit: '', min: 0, max: 1, step: 0.1 },
@@ -15,14 +22,9 @@ const effectLevelContainerElement = document.querySelector('.img-upload__effect-
 const effectLevelValueElement = document.querySelector('.effect-level__value');
 const sliderElement = document.querySelector('.effect-level__slider');
 
-let currentEffect = Effect[DEFAULT_EFFECT];
+let currentEffect = effectNameToSettings[DEFAULT_EFFECT];
 
-noUiSlider.create(sliderElement, {
-  range: { min: 0, max: 1 },
-  start: 1,
-  step: 0.1,
-  connect: 'lower',
-});
+noUiSlider.create(sliderElement, DEFAULT_SLIDER_OPTIONS);
 
 const applyEffectLevel = () => {
   if (!currentEffect.filter) {
@@ -36,7 +38,7 @@ const applyEffectLevel = () => {
 };
 
 const setEffect = (effectName) => {
-  currentEffect = Effect[effectName];
+  currentEffect = effectNameToSettings[effectName];
 
   if (!currentEffect.filter) {
     effectLevelContainerElement.classList.add('hidden');

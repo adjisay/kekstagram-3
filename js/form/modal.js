@@ -9,32 +9,26 @@ const overlayElement = formElement.querySelector('.img-upload__overlay');
 const hashtagInputElement = formElement.querySelector('.text__hashtags');
 const commentInputElement = formElement.querySelector('.text__description');
 
-const onHashtagInputKeydown = (evt) => {
+const onFieldKeydown = (evt) => {
   if (isEscapeKey(evt)) {
     evt.stopPropagation();
   }
 };
 
-const onCommentInputKeydown = (evt) => {
-  if (isEscapeKey(evt)) {
-    evt.stopPropagation();
-  }
+const openUploadForm = () => {
+  overlayElement.classList.remove('hidden');
+  document.body.classList.add('modal-open');
+  document.addEventListener('keydown', onDocumentKeydown);
 };
 
-hashtagInputElement.addEventListener('keydown', onHashtagInputKeydown);
-commentInputElement.addEventListener('keydown', onCommentInputKeydown);
+hashtagInputElement.addEventListener('keydown', onFieldKeydown);
+commentInputElement.addEventListener('keydown', onFieldKeydown);
 
 function onDocumentKeydown(evt) {
   if (isEscapeKey(evt)) {
     evt.preventDefault();
     closeUploadForm();
   }
-}
-
-function openUploadForm() {
-  overlayElement.classList.remove('hidden');
-  document.body.classList.add('modal-open');
-  document.addEventListener('keydown', onDocumentKeydown);
 }
 
 function closeUploadForm() {
